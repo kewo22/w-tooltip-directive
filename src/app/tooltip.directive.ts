@@ -29,13 +29,13 @@ export class TooltipDirective implements OnInit, AfterViewInit {
     this.toolTipWrapperElement = this.renderer.createElement("span");
     this.renderer.setStyle(this.toolTipWrapperElement, "position", "absolute");
     this.renderer.setStyle(this.toolTipWrapperElement, "top", "100%");
-    this.renderer.setStyle(this.toolTipWrapperElement, "zIndex", "absolute");
+    this.renderer.setStyle(this.toolTipWrapperElement, "z-index", "999");
     this.renderer.setStyle(this.toolTipWrapperElement, "min-width", "130px");
     this.renderer.setStyle(this.toolTipWrapperElement, "padding", "4px 8px");
     this.renderer.setStyle(
       this.toolTipWrapperElement,
       "background-color",
-      "#74a0a7"
+      "#000000"
     );
     this.renderer.setStyle(this.toolTipWrapperElement, "color", "#ffffff");
     this.renderer.setStyle(this.toolTipWrapperElement, "border-radius", "4px");
