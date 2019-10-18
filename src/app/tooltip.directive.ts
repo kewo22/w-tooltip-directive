@@ -23,6 +23,8 @@ export class TooltipDirective implements OnInit, AfterViewInit {
     this.tooltipText = this.tooltipText
       ? this.tooltipText
       : this.el.nativeElement.innerText;
+
+    console.log(this.el.nativeElement.getBoundingClientRect());
   }
 
   ngAfterViewInit() {
@@ -31,7 +33,9 @@ export class TooltipDirective implements OnInit, AfterViewInit {
     this.renderer.setStyle(this.toolTipWrapperElement, "top", "100%");
     this.renderer.setStyle(this.toolTipWrapperElement, "z-index", "999");
     this.renderer.setStyle(this.toolTipWrapperElement, "width", "auto");
+    this.renderer.setStyle(this.toolTipWrapperElement, "min-width", "130px");
     this.renderer.setStyle(this.toolTipWrapperElement, "padding", "4px 8px");
+    this.renderer.setStyle(this.toolTipWrapperElement, "text-align", "center");
     this.renderer.setStyle(
       this.toolTipWrapperElement,
       "background-color",
@@ -45,11 +49,14 @@ export class TooltipDirective implements OnInit, AfterViewInit {
 
     this.toolTipWrapperElement.innerText = this.tooltipText;
 
-    this.renderer.listen(this.el.nativeElement, "mouseenter", () => {
-
+    if (this.thisWidth <= this.toolTipWrapperElement.clientWidth) {
+      this.renderer.setStyle(this.toolTipWrapperElement, "left", "0px");
+    } else {
       const s = (this.thisWidth - this.toolTipWrapperElement.clientWidth) / 2;
       this.renderer.setStyle(this.toolTipWrapperElement, "right", s + "px");
+    }
 
+    this.renderer.listen(this.el.nativeElement, "mouseenter", () => {
       this.renderer.appendChild(
         this.el.nativeElement,
         this.toolTipWrapperElement
@@ -57,10 +64,10 @@ export class TooltipDirective implements OnInit, AfterViewInit {
     });
 
     this.renderer.listen(this.el.nativeElement, "mouseleave", () => {
-      this.renderer.removeChild(
-        this.el.nativeElement,
-        this.toolTipWrapperElement
-      );
+      // this.renderer.removeChild(
+      //   this.el.nativeElement,
+      //   this.toolTipWrapperElement
+      // );
     });
   }
 }
