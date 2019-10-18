@@ -19,7 +19,7 @@ export class TooltipDirective implements OnInit, AfterViewInit {
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit() {
-    this.thisWidth = (this.el.nativeElement as HTMLElement).clientWidth;
+    this.thisWidth = (this.el.nativeElement as HTMLElement).offsetWidth;
     this.tooltipText = this.tooltipText
       ? this.tooltipText
       : this.el.nativeElement.innerText;
@@ -28,7 +28,10 @@ export class TooltipDirective implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+
+
     this.toolTipWrapperElement = this.renderer.createElement("span");
+    this.toolTipWrapperElement.innerText = this.tooltipText;
     this.renderer.setStyle(this.toolTipWrapperElement, "position", "absolute");
     this.renderer.setStyle(this.toolTipWrapperElement, "top", "100%");
     this.renderer.setStyle(this.toolTipWrapperElement, "z-index", "999");
@@ -47,15 +50,14 @@ export class TooltipDirective implements OnInit, AfterViewInit {
 
     this.renderer.setStyle(this.el.nativeElement, "position", "relative");
 
-    this.toolTipWrapperElement.innerText = this.tooltipText;
+  //   if (this.thisWidth <= this.toolTipWrapperElement.offsetWidth) {
+  //     this.renderer.setStyle(this.toolTipWrapperElement, "left", "0px");
+  //   } else {
+  //     const s = (this.thisWidth - this.toolTipWrapperElement.offsetWidth) / 2;
+  //     this.renderer.setStyle(this.toolTipWrapperElement, "right", s + "px");
+  //   }
 
-    if (this.thisWidth <= this.toolTipWrapperElement.clientWidth) {
-      this.renderer.setStyle(this.toolTipWrapperElement, "left", "0px");
-    } else {
-      const s = (this.thisWidth - this.toolTipWrapperElement.clientWidth) / 2;
-      this.renderer.setStyle(this.toolTipWrapperElement, "right", s + "px");
-    }
-
+    this.renderer.setStyle(this.toolTipWrapperElement, "left", this.el.nativeElement.getBoundingClientRect().x + "px");
     this.renderer.listen(this.el.nativeElement, "mouseenter", () => {
       this.renderer.appendChild(
         this.el.nativeElement,
@@ -64,10 +66,10 @@ export class TooltipDirective implements OnInit, AfterViewInit {
     });
 
     this.renderer.listen(this.el.nativeElement, "mouseleave", () => {
-      // this.renderer.removeChild(
-      //   this.el.nativeElement,
-      //   this.toolTipWrapperElement
-      // );
+      this.renderer.removeChild(
+        this.el.nativeElement,
+        this.toolTipWrapperElement
+      );
     });
   }
 }
