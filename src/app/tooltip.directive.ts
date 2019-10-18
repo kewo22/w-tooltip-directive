@@ -30,7 +30,7 @@ export class TooltipDirective implements OnInit, AfterViewInit {
     this.renderer.setStyle(this.toolTipWrapperElement, "position", "absolute");
     this.renderer.setStyle(this.toolTipWrapperElement, "top", "100%");
     this.renderer.setStyle(this.toolTipWrapperElement, "z-index", "999");
-    this.renderer.setStyle(this.toolTipWrapperElement, "min-width", "130px");
+    this.renderer.setStyle(this.toolTipWrapperElement, "width", "auto");
     this.renderer.setStyle(this.toolTipWrapperElement, "padding", "4px 8px");
     this.renderer.setStyle(
       this.toolTipWrapperElement,
@@ -43,13 +43,12 @@ export class TooltipDirective implements OnInit, AfterViewInit {
 
     this.renderer.setStyle(this.el.nativeElement, "position", "relative");
 
-    this.renderer.listen(this.el.nativeElement, "mouseenter", () => {
-      this.toolTipWrapperElement.innerText = this.tooltipText;
+    this.toolTipWrapperElement.innerText = this.tooltipText;
 
-      setTimeout(() => {
-        const s = (this.thisWidth - this.toolTipWrapperElement.clientWidth) / 2;
-        this.renderer.setStyle(this.toolTipWrapperElement, "right", s + "px");
-      }, 1);
+    this.renderer.listen(this.el.nativeElement, "mouseenter", () => {
+
+      const s = (this.thisWidth - this.toolTipWrapperElement.clientWidth) / 2;
+      this.renderer.setStyle(this.toolTipWrapperElement, "right", s + "px");
 
       this.renderer.appendChild(
         this.el.nativeElement,
